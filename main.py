@@ -1,10 +1,11 @@
 import streamlit as st
 from utils import get_sample
-import random
-import pandas as pd
 import string
 import random
 import csv
+
+reference_dataset = "500.json"
+your_name = "Fede"
 
 with st.sidebar:
     st.write("Annotation")
@@ -13,14 +14,14 @@ with st.sidebar:
 # generating random strings
 key = ''.join(random.choices(string.ascii_uppercase + string.digits, k=18))
 if 'key' not in st.session_state:
-    st.session_state['key'] = key
+    st.session_state['key'] = f"{reference_dataset}_{your_name}_{key}"
 
 if 'number' not in st.session_state:
     st.session_state['number'] = 0
 
 data = get_sample(st.session_state['number'])
 
-options = [("redpaca2500", data["redpaca2500"]), ("alpaca", data["alpaca"])]
+options = [(reference_dataset, data[reference_dataset]), ("alpaca", data["alpaca"])]
 
 random.shuffle(options)
 
@@ -66,8 +67,8 @@ with col2:
 with col3:
     st.button("Column B", on_click=on_clicker(options[1][0]))
 with col1:
-    st.button("Equally Bad", on_click=on_clicker("BBAD"))
+    st.button("Equally Bad", on_click=on_clicker("Equally Bad"))
 with col4:
-    st.button("Equally Good", on_click=on_clicker("BGOOD"))
+    st.button("Equally Good", on_click=on_clicker("Equally Good"))
 
 
