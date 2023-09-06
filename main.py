@@ -4,7 +4,9 @@ import string
 import random
 import csv
 
-reference_dataset = "500.json"
+reference_dataset = "llama-7b-hf-saferpaca-Instructions-2000.json"
+key_in_dataset = reference_dataset.replace(".json", "")
+
 your_name = "Fede"
 
 with st.sidebar:
@@ -19,9 +21,9 @@ if 'key' not in st.session_state:
 if 'number' not in st.session_state:
     st.session_state['number'] = 0
 
-data = get_sample(st.session_state['number'])
+data = get_sample(reference_dataset, st.session_state['number'])
 
-options = [(reference_dataset, data[reference_dataset]), ("alpaca", data["alpaca"])]
+options = [(reference_dataset, data[key_in_dataset]), ("alpaca", data["alpaca"])]
 
 random.shuffle(options)
 
@@ -34,7 +36,11 @@ st.write("* You are presented with two columns that contains answers from two di
 st.write("* You can also decide that both columns are equally good or equally bad.")
 st.write("* Columns are randomly shuffled.")
 
-st.write(f"## Question:\n### {question}")
+percentage = round(st.session_state['number']/100*100, 2)
+st.write(f"## You are at {st.session_state['number']} out of 100. That is {percentage}% of the dataset.")
+
+
+st.write(f"# Question:\n### {question}")
 
 col1, col2 = st.columns(2)
 
